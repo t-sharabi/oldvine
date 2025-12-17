@@ -99,17 +99,36 @@ Users can switch languages using the language selector in the header.
 
 ## 📦 Deployment
 
-The website is deployed as a static site. To deploy:
+The website is **fully portable** and can be deployed to **any static hosting service**.
 
-1. Build the production bundle:
+### Quick Deploy (3 Steps)
+
+1. **Clone and build:**
    ```bash
-   cd client
+   git clone https://github.com/t-sharabi/oldvine.git
+   cd oldvine/client
+   npm install
    npm run build
    ```
 
-2. Upload the contents of `client/build/` to your web server's `public_html` directory.
+2. **Upload `client/build/` contents** to your web server
 
-3. Ensure `.htaccess` is included for proper routing.
+3. **Done!** The website is live.
+
+### Supported Hosting Services
+
+✅ **cPanel/Shared Hosting** (GoDaddy, Bluehost, etc.)  
+✅ **VPS/Cloud Servers** (DigitalOcean, AWS, Azure)  
+✅ **Static Hosting** (Netlify, Vercel, GitHub Pages)  
+✅ **CDN Services** (Cloudflare Pages, AWS S3 + CloudFront)
+
+### Detailed Deployment Guide
+
+See [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) for:
+- Step-by-step instructions for each hosting type
+- Server configuration (Apache, Nginx, IIS)
+- Troubleshooting tips
+- Post-deployment verification checklist
 
 ## 📄 License
 
