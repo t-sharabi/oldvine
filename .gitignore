@@ -1,0 +1,68 @@
+# Dependencies
+node_modules/
+client/node_modules/
+server/
+
+# Build outputs (optional - uncomment if you want to exclude build)
+# client/build/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+client/.env*
+server/.env*
+
+# Logs
+*.log
+logs/
+client/logs/
+server/logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Deployment archives
+*.tar.gz
+*.tgz
+*.zip
+deploy.*
+backend-deploy.*
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Test files
+coverage/
+.nyc_output/
+
+# CMS/Backend specific (exclude entire server)
+server/
+
+# User input files (if sensitive)
+user_input_files/
+
+# Build artifacts that might be regenerated
+client/build/static/js/*.map
+client/build/static/css/*.map
+
