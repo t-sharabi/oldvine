@@ -53,8 +53,8 @@ vine_hotel/
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
-   cd vine_hotel
+   git clone https://github.com/t-sharabi/oldvine.git
+   cd oldvine
    ```
 
 2. **Install dependencies**
