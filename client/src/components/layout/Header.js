@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   AppBar,
   Toolbar,
-  Typography,
   Button,
   Box,
   IconButton,
@@ -15,8 +14,6 @@ import {
   ListItemText,
   useMediaQuery,
   useTheme,
-  Select,
-  FormControl,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -32,10 +29,20 @@ const Header = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
   const location = useLocation();
-  
+
   const [mobileOpen, setMobileOpen] = useState(false);
   const [languageAnchor, setLanguageAnchor] = useState(null);
   const [scrolled, setScrolled] = useState(false);
+
+  // ✅ لون غامق ثابت للهيدر الفاتح (حتى لو الثيم Dark)
+  const lightHeaderText = '#1a1a1a';
+
+  // ✅ Pending 17: Book Now -> WhatsApp with preset message
+  const WA_NUMBER = '963986105010';
+  const WA_TEXT = encodeURIComponent(
+    'For all booking inquiries and reservation confirmations, kindly contact us via WhatsApp'
+  );
+  const WA_LINK = `https://wa.me/${WA_NUMBER}?text=${WA_TEXT}`;
 
   const navigationItems = [
     { label: t('nav.home'), path: '/' },
@@ -53,25 +60,24 @@ const Header = () => {
   ];
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+  // ✅ صفحات الخلفية عندها فاتحة (زيدي هون أي route تاني)
+  const lightHeaderRoutes = ['/facilities', '/contact'];
+  const forceLightHeader = lightHeaderRoutes.some(
+    (r) => location.pathname === r || location.pathname.startsWith(r + '/')
+  );
 
-  const handleLanguageClick = (event) => {
-    setLanguageAnchor(event.currentTarget);
-  };
+  const isLightHeader = scrolled || forceLightHeader;
 
-  const handleLanguageClose = () => {
-    setLanguageAnchor(null);
-  };
+  const handleDrawerToggle = () => setMobileOpen((prev) => !prev);
 
+  const handleLanguageClick = (event) => setLanguageAnchor(event.currentTarget);
+  const handleLanguageClose = () => setLanguageAnchor(null);
   const handleLanguageChange = (languageCode) => {
     i18n.changeLanguage(languageCode);
     handleLanguageClose();
@@ -100,7 +106,7 @@ const Header = () => {
           <CloseIcon />
         </IconButton>
       </Box>
-      
+
       <List>
         {navigationItems.map((item) => (
           <ListItem key={item.path} disablePadding>
@@ -110,7 +116,7 @@ const Header = () => {
               sx={{
                 textAlign: 'center',
                 backgroundColor: isActiveRoute(item.path) ? 'primary.main' : 'transparent',
-                color: isActiveRoute(item.path) ? 'white' : 'text.primary',
+                color: isActiveRoute(item.path) ? 'white' : lightHeaderText,
                 '&:hover': {
                   backgroundColor: 'primary.light',
                   color: 'white',
@@ -121,20 +127,21 @@ const Header = () => {
             </ListItemButton>
           </ListItem>
         ))}
-        
+
+        {/* ✅ Pending 17: Drawer Book Now -> WhatsApp */}
         <ListItem disablePadding>
           <ListItemButton
-            component={Link}
-            to="/booking"
+            component="a"
+            href={WA_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
             sx={{
               textAlign: 'center',
               backgroundColor: 'secondary.main',
               color: 'secondary.contrastText',
               m: 2,
               borderRadius: 2,
-              '&:hover': {
-                backgroundColor: 'secondary.dark',
-              },
+              '&:hover': { backgroundColor: 'secondary.dark' },
             }}
           >
             <ListItemText primary={t('nav.booking')} />
@@ -149,15 +156,22 @@ const Header = () => {
       <AppBar
         position="fixed"
         sx={{
-          backgroundColor: scrolled ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
-          color: scrolled ? 'text.primary' : 'white',
+          backgroundColor: isLightHeader ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
+          color: isLightHeader ? lightHeaderText : 'white',
           transition: 'all 0.3s ease-in-out',
-          backdropFilter: scrolled ? 'blur(10px)' : 'none',
-          boxShadow: scrolled ? 3 : 0,
-          zIndex: 1300, // Ensure header is always on top
+          backdropFilter: isLightHeader ? 'blur(10px)' : 'none',
+          boxShadow: isLightHeader ? 3 : 0,
+          zIndex: 1300,
         }}
       >
-        <Toolbar sx={{ justifyContent: 'space-between', maxWidth: 1200, width: '100%', mx: 'auto' }}>
+        <Toolbar
+          sx={{
+            justifyContent: 'space-between',
+            maxWidth: 1200,
+            width: '100%',
+            mx: 'auto',
+          }}
+        >
           {/* Logo */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -171,16 +185,14 @@ const Header = () => {
                 display: 'flex',
                 alignItems: 'center',
                 textDecoration: 'none',
-                '&:hover': {
-                  opacity: 0.8,
-                },
+                '&:hover': { opacity: 0.8 },
               }}
             >
               <img
                 src="/images/logo.png"
                 alt="Old Vine Hotel"
                 style={{
-                  height: scrolled ? '50px' : '60px',
+                  height: isLightHeader ? '50px' : '60px',
                   width: 'auto',
                   transition: 'all 0.3s ease-in-out',
                 }}
@@ -202,17 +214,17 @@ const Header = () => {
                     component={Link}
                     to={item.path}
                     sx={{
-                      color: scrolled 
-                        ? (isActiveRoute(item.path) ? 'secondary.main' : 'text.primary')
-                        : (isActiveRoute(item.path) ? 'white' : 'white'),
+                      color: isLightHeader
+                        ? (isActiveRoute(item.path) ? 'secondary.main' : lightHeaderText)
+                        : 'white',
                       fontWeight: isActiveRoute(item.path) ? 600 : 400,
                       borderBottom: isActiveRoute(item.path) ? 2 : 0,
                       borderColor: 'secondary.main',
                       borderRadius: 0,
-                      opacity: isActiveRoute(item.path) ? 1 : 0.8,
+                      opacity: isActiveRoute(item.path) ? 1 : 0.85,
                       '&:hover': {
                         backgroundColor: 'transparent',
-                        color: scrolled ? 'secondary.main' : 'white',
+                        color: isLightHeader ? 'secondary.main' : 'white',
                         opacity: 1,
                       },
                     }}
@@ -221,27 +233,26 @@ const Header = () => {
                   </Button>
                 </motion.div>
               ))}
-              
+
               {/* Language Selector */}
               <IconButton onClick={handleLanguageClick} sx={{ color: 'inherit' }}>
                 <LanguageIcon />
               </IconButton>
-              
-              {/* Book Now Button */}
+
+              {/* ✅ Pending 17: Book Now -> WhatsApp */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
               >
                 <Button
-                  component={Link}
-                  to="/booking"
+                  component="a"
+                  href={WA_LINK}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   variant="contained"
                   color="secondary"
-                  sx={{
-                    fontWeight: 600,
-                    px: 3,
-                  }}
+                  sx={{ fontWeight: 600, px: 3 }}
                 >
                   {t('nav.booking')}
                 </Button>
@@ -249,17 +260,13 @@ const Header = () => {
             </Box>
           )}
 
-          {/* Mobile Menu Button */}
+          {/* Mobile */}
           {isMobile && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <IconButton onClick={handleLanguageClick} sx={{ color: 'inherit' }}>
                 <LanguageIcon />
               </IconButton>
-              <IconButton
-                color="inherit"
-                onClick={handleDrawerToggle}
-                sx={{ ml: 1 }}
-              >
+              <IconButton color="inherit" onClick={handleDrawerToggle} sx={{ ml: 1 }}>
                 <MenuIcon />
               </IconButton>
             </Box>
@@ -273,9 +280,7 @@ const Header = () => {
         anchor="right"
         open={mobileOpen}
         onClose={handleDrawerToggle}
-        ModalProps={{
-          keepMounted: true,
-        }}
+        ModalProps={{ keepMounted: true }}
         sx={{
           '& .MuiDrawer-paper': {
             boxSizing: 'border-box',
@@ -307,7 +312,6 @@ const Header = () => {
           </MenuItem>
         ))}
       </Menu>
-
     </>
   );
 };

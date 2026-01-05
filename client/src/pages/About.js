@@ -332,102 +332,104 @@ const About = () => {
           </motion.div>
         </Container>
       </Box>
+ {false && (
+  <Container maxWidth="lg" sx={{ py: 8 }}>
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true }}
+    >
+      <Typography
+        variant="h3"
+        component="h2"
+        textAlign="center"
+        sx={{ mb: 6, color: 'primary.main' }}
+      >
+        Our Journey
+      </Typography>
 
-      {/* Timeline Section */}
-      <Container maxWidth="lg" sx={{ py: 8 }}>
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          <Typography
-            variant="h3"
-            component="h2"
-            textAlign="center"
-            sx={{
-              mb: 6,
-              color: 'primary.main',
-            }}
+      <Box sx={{ position: 'relative' }}>
+        {/* Timeline line */}
+        <Box
+          sx={{
+            position: 'absolute',
+            left: '50%',
+            top: 0,
+            bottom: 0,
+            width: 2,
+            backgroundColor: 'primary.main',
+            transform: 'translateX(-50%)',
+            display: { xs: 'none', md: 'block' },
+          }}
+        />
+
+        {milestones.map((milestone, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: index * 0.2 }}
+            viewport={{ once: true }}
           >
-            Our Journey
-          </Typography>
-          
-          <Box sx={{ position: 'relative' }}>
-            {/* Timeline line */}
             <Box
               sx={{
-                position: 'absolute',
-                left: '50%',
-                top: 0,
-                bottom: 0,
-                width: 2,
-                backgroundColor: 'primary.main',
-                transform: 'translateX(-50%)',
-                display: { xs: 'none', md: 'block' }
+                display: 'flex',
+                alignItems: 'center',
+                mb: 6,
+                flexDirection: {
+                  xs: 'column',
+                  md: index % 2 === 0 ? 'row' : 'row-reverse',
+                },
+                textAlign: { xs: 'center', md: 'left' },
               }}
-            />
-            
-            {milestones.map((milestone, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                viewport={{ once: true }}
-              >
-                <Box
+            >
+              <Box sx={{ flex: 1, px: { xs: 0, md: 4 } }}>
+                <Card
                   sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    mb: 6,
-                    flexDirection: { xs: 'column', md: index % 2 === 0 ? 'row' : 'row-reverse' },
-                    textAlign: { xs: 'center', md: 'left' }
+                    p: 3,
+                    maxWidth: 400,
+                    mx: { xs: 'auto', md: index % 2 === 0 ? 0 : 'auto' },
                   }}
                 >
-                  <Box sx={{ flex: 1, px: { xs: 0, md: 4 } }}>
-                    <Card sx={{ p: 3, maxWidth: 400, mx: { xs: 'auto', md: index % 2 === 0 ? 0 : 'auto' } }}>
-                      <Typography
-                        variant="h4"
-                        component="h3"
-                        sx={{
-                          color: 'secondary.main',
-                          fontWeight: 700,
-                          mb: 1
-                        }}
-                      >
-                        {milestone.year}
-                      </Typography>
-                      <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-                        {milestone.title}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {milestone.description}
-                      </Typography>
-                    </Card>
-                  </Box>
-                  
-                  {/* Timeline dot */}
-                  <Box
-                    sx={{
-                      width: 20,
-                      height: 20,
-                      backgroundColor: 'secondary.main',
-                      borderRadius: '50%',
-                      border: `4px solid ${theme.palette.background.paper}`,
-                      boxShadow: 2,
-                      display: { xs: 'none', md: 'block' },
-                      zIndex: 1
-                    }}
-                  />
-                  
-                  <Box sx={{ flex: 1 }} />
-                </Box>
-              </motion.div>
-            ))}
-          </Box>
-        </motion.div>
-      </Container>
+                  <Typography
+                    variant="h4"
+                    component="h3"
+                    sx={{ color: 'secondary.main', fontWeight: 700, mb: 1 }}
+                  >
+                    {milestone.year}
+                  </Typography>
+                  <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+                    {milestone.title}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {milestone.description}
+                  </Typography>
+                </Card>
+              </Box>
+
+              {/* Timeline dot */}
+              <Box
+                sx={{
+                  width: 20,
+                  height: 20,
+                  backgroundColor: 'secondary.main',
+                  borderRadius: '50%',
+                  border: `4px solid ${theme.palette.background.paper}`,
+                  boxShadow: 2,
+                  display: { xs: 'none', md: 'block' },
+                  zIndex: 1,
+                }}
+              />
+
+              <Box sx={{ flex: 1 }} />
+            </Box>
+          </motion.div>
+        ))}
+      </Box>
+    </motion.div>
+  </Container>
+)}
 
     </>
   );
