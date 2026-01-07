@@ -99,6 +99,8 @@
     "message": "Message",
     "sendMessage": "Send Message",
     "messageSent": "Message sent successfully!",
+    "whatsappOpened": "WhatsApp opened. Press Send inside WhatsApp to deliver your message.",
+    "requiredFields": "Please fill the required fields (name, email, message).",
     "directions": "Get Directions",
     "whatsapp": "WhatsApp"
   },

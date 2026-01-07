@@ -34,10 +34,8 @@ const Header = () => {
   const [languageAnchor, setLanguageAnchor] = useState(null);
   const [scrolled, setScrolled] = useState(false);
 
-  // ✅ لون غامق ثابت للهيدر الفاتح (حتى لو الثيم Dark)
   const lightHeaderText = '#1a1a1a';
 
-  // ✅ Pending 17: Book Now -> WhatsApp with preset message
   const WA_NUMBER = '963986105010';
   const WA_TEXT = encodeURIComponent(
     'For all booking inquiries and reservation confirmations, kindly contact us via WhatsApp'
@@ -66,7 +64,6 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // ✅ صفحات الخلفية عندها فاتحة (زيدي هون أي route تاني)
   const lightHeaderRoutes = ['/facilities', '/contact'];
   const forceLightHeader = lightHeaderRoutes.some(
     (r) => location.pathname === r || location.pathname.startsWith(r + '/')
@@ -128,7 +125,6 @@ const Header = () => {
           </ListItem>
         ))}
 
-        {/* ✅ Pending 17: Drawer Book Now -> WhatsApp */}
         <ListItem disablePadding>
           <ListItemButton
             component="a"
@@ -239,7 +235,6 @@ const Header = () => {
                 <LanguageIcon />
               </IconButton>
 
-              {/* ✅ Pending 17: Book Now -> WhatsApp */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
