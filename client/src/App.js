@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { Box, CircularProgress } from '@mui/material';
 import { motion } from 'framer-motion';
 
@@ -93,6 +93,9 @@ function App() {
               </ProtectedRoute>
             }
           >
+            {/* NEW: redirect /admin -> /admin/dashboard */}
+            <Route index element={<Navigate to="dashboard" replace />} />
+
             <Route path="dashboard" element={<DashboardMain />} />
             <Route path="content" element={<ContentManagement />} />
             <Route path="rooms" element={<RoomManagement />} />
@@ -100,6 +103,8 @@ function App() {
             <Route path="blog" element={<BlogManagement />} />
             <Route path="media" element={<MediaManagement />} />
             <Route path="settings" element={<SettingsManagement />} />
+
+            {/* Optional fallback: keep if you want unknown admin routes to land on dashboard */}
             <Route path="*" element={<DashboardMain />} />
           </Route>
         </Routes>
